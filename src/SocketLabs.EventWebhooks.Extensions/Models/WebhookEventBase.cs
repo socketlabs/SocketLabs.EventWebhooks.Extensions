@@ -2,14 +2,16 @@
 
 namespace SocketLabs.EventWebhooks.Extensions.Models
 {
-    [JsonPolymorphic(TypeDiscriminatorPropertyName = nameof(Type))]
-    [JsonDerivedType(typeof(EngagementEvent), typeDiscriminator: "Tracking")]
-    [JsonDerivedType(typeof(ComplaintEvent), typeDiscriminator: "Complaint")]
-    [JsonDerivedType(typeof(FailedEvent), typeDiscriminator: "Failed")]
-    [JsonDerivedType(typeof(SentEvent), typeDiscriminator: "Delivered")]
-    [JsonDerivedType(typeof(ValidationEvent), typeDiscriminator: "Validation")]
-    [JsonDerivedType(typeof(QueuedEvent), typeDiscriminator: "Queued")]
-    [JsonDerivedType(typeof(DeferredEvent), typeDiscriminator: "Deferred")]
+    //[JsonPolymorphic(TypeDiscriminatorPropertyName = nameof(Type))]
+    //[JsonDerivedType(typeof(EngagementEvent), typeDiscriminator: "Tracking")]
+    //[JsonDerivedType(typeof(ComplaintEvent), typeDiscriminator: "Complaint")]
+    //[JsonDerivedType(typeof(FailedEvent), typeDiscriminator: "Failed")]
+    //[JsonDerivedType(typeof(SentEvent), typeDiscriminator: "Delivered")]
+    //[JsonDerivedType(typeof(ValidationEvent), typeDiscriminator: "Validation")]
+    //[JsonDerivedType(typeof(QueuedEvent), typeDiscriminator: "Queued")]
+    //[JsonDerivedType(typeof(DeferredEvent), typeDiscriminator: "Deferred")]
+
+    [JsonConverter(typeof(WebhookEventConverter))]
     public abstract class WebhookEventBase
     {
         public string? Type { get; set; }
