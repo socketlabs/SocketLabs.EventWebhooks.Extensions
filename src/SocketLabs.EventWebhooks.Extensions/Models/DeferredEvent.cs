@@ -2,7 +2,7 @@
 
 namespace SocketLabs.EventWebhooks.Extensions.Models
 {
-    public class DeferredEvent : NotificationEventBase
+    public class DeferredEvent : WebhookEventBase
     {
         public string? FromAddress { get; set; }
         public int DeferralCode { get; set; }

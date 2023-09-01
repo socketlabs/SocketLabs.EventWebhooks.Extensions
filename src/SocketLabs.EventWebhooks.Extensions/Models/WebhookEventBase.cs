@@ -10,7 +10,7 @@ namespace SocketLabs.EventWebhooks.Extensions.Models
     [JsonDerivedType(typeof(ValidationEvent), typeDiscriminator: "Validation")]
     [JsonDerivedType(typeof(QueuedEvent), typeDiscriminator: "Queued")]
     [JsonDerivedType(typeof(DeferredEvent), typeDiscriminator: "Deferred")]
-    public class NotificationEventBase
+    public abstract class WebhookEventBase
     {
         public string? Type { get; set; }
         public DateTime DateTime { get; set; }
@@ -35,5 +35,4 @@ namespace SocketLabs.EventWebhooks.Extensions.Models
         public string Key { get; set; } = default!;
         public string Value { get; set; } = default!;
     }
-
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SocketLabs.EventWebhooks.Extensions.Models
 {
-    public class ValidationEvent : NotificationEventBase
+    public class ValidationEvent : WebhookEventBase
     {
     }
 }

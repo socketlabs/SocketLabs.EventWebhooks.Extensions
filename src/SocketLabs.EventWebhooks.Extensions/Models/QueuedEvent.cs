@@ -2,7 +2,7 @@
 
 namespace SocketLabs.EventWebhooks.Extensions.Models
 {
-    public class QueuedEvent : NotificationEventBase
+    public class QueuedEvent : WebhookEventBase
     {
         public string? FromAddress { get; set; }
         public string? SubjectLine { get; set; }

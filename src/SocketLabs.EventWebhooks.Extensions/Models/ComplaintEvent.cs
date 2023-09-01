@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SocketLabs.EventWebhooks.Extensions.Models
 {
-    public class ComplaintEvent : NotificationEventBase
+    public class ComplaintEvent : WebhookEventBase
     {
         public string? FblType { get; set; }
         public string? UserAgent { get; set; }

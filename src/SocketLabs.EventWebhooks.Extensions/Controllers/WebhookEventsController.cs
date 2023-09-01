@@ -27,7 +27,7 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
 
         [HttpPost]
         [Route("{id}")]
-        public async Task<IActionResult> Post(NotificationEventBase webhookEvent, string id)
+        public async Task<IActionResult> Post(WebhookEventBase webhookEvent, string id)
         {
             if (!_options.TryGetWebhook(id, out var endpoint) || endpoint?.SecretKey != webhookEvent.SecretKey)
             {

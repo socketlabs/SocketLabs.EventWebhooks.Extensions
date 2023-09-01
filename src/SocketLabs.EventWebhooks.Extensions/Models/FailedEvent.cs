@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SocketLabs.EventWebhooks.Extensions.Models
 {
-    public class FailedEvent : NotificationEventBase
+    public class FailedEvent : WebhookEventBase
     {
         public string? DiagnosticCode { get; set; }
         public string? BounceStatus { get; set; }
