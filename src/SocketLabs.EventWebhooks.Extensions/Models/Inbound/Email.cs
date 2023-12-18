@@ -2,7 +2,7 @@
 {
     public class Email
     {
-        public required string EmailAddress { get; set; }
+        public string EmailAddress { get; set; } = null!;
         public string? FriendlyName { get; set; }
     }
 }
