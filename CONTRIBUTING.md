@@ -1,4 +1,4 @@
-# Contributing to 'SocketLabs.EventWebhooks.Extensions'
+# Contributing to SocketLabs.EventWebhooks.Extensions
 
 If you discover issues, have ideas for improvements or new features,
 please report them to the [issue tracker](https://github.com/socketlabs/SocketLabs.EventWebhooks.Extensions/issues) of the repository or
@@ -27,7 +27,7 @@ You can request a new feature by submitting an issue to our
 consider what kind of change it is:
 
 * **Major Changes** that you wish to contribute to the project should be
-  discussed first with `socketlabs-csharp` contributors in an issue or pull request so
+  discussed first with `SocketLabs.EventWebhooks.Extensions` contributors in an issue or pull request so
   that we can develop a proper solution and better coordinate our efforts,
   prevent duplication of work, and help you to craft the change so that it is
   successfully accepted into the project.

@@ -2,39 +2,80 @@
 
 [![Build status][build-status]][build]
 # SocketLabs.EventWebhooks.Extensions
-> If you are reading, someone used a template and never updated the readme.  
-> 
->Please update me 😢.
+> Library to make consuming SocketLabs webhooks easier.
 
 ## Getting Started
 ### Prerequisites
 
 * Visual Studio or VSCode
-* .NET 7
+* .NET 8
 
-### Building
+### Usage
 
-1. CI builds are configured in [Azure DevOps][build]
+Import using dotnet CLI or the Package Manager console in Visual Studio
 
-### Installation
+#### dotnet cli
 
-1. CI Deployments are deployed automatically in [Azure DevOps Releases][release]
+```shell
+dotnet add package SocketLabs.EventWebhooks.Extensions
+```
+
+#### Package Manager
+
+```powershell
+Install-Package SocketLabs.EventWebhooks.Extensions
+```
+
+Inject the webhook services
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// Code removed for brevity ...
+
+// Add the webhook endpoints
+builder.Services.AddWebhookEndpoints(builder.Configuration);
+
+// Add custom implementation of IWebhookEventHandler
+builder.Services.AddSingleton<IWebhookEventHandler, WebhookEventHandler>();
+
+```
+
+Add webhook configurations
+
+#### appsettings.json
+```javascript
+{
+  "WebhookOptions": {
+    "WebhookEndpoints": [
+      {
+        "Name": "cc0b4dc6-d867-49f5-9d8e-8357997789af",
+        "SecretKey": "Z123456AbcD1234563Ef"
+      }
+    ]
+  }
+}
+```
+
+Configure Endpoint URL in portal
+
+```
+https://example.com/api/v1/webhookevents/cc0b4dc6-d867-49f5-9d8e-8357997789af
+```
 
 ### Release History
 
 * 1.0.0 Initial Release
 
-### Documentation
-
-Documentation is available in [Confluence][docs]
-
 ### License
 
-This code base is confidential and not for public distribution at this time.
+[MIT License](LICENSE.md)
+
+### Contributing
+
+[Contributor Guidelines](CONTRIBUTING.md)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[build-status]: https://dev.azure.com/socketlabs/ServiceProvider/_apis/build/status/SocketLabs.Template.Worker-CI?branchName=main
-[build]: https://dev.azure.com/socketlabs/SelfService/_build?definitionId=0
-[release]: https://dev.azure.com/socketlabs/SelfService/_release?view=all&_a=releases&definitionId=0
-[docs]: https://socketlabs.atlassian.net/wiki/spaces/SSR/
+[build-status]: https://dev.azure.com/socketlabs/Public%20Projects/_apis/build/status/SocketLabs.EventWebhooks.Extensions-CI?branchName=main
+[build]: https://dev.azure.com/socketlabs/Public%20Projects/_build/latest?definitionId=170
