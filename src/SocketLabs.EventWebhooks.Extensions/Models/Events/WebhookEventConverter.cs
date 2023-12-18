@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using SocketLabs.EventWebhooks.Extensions.Models.Inbound;
 
-namespace SocketLabs.EventWebhooks.Extensions.Models
+namespace SocketLabs.EventWebhooks.Extensions.Models.Events
 {
     internal class WebhookEventConverter : JsonConverter<WebhookEventBase>
     {
@@ -31,7 +32,14 @@ namespace SocketLabs.EventWebhooks.Extensions.Models
                 }
             }
 
-            throw new JsonException();
+            // Try to parse it as a message parsed event.
+            
+            var parsedEvent = JsonSerializer.Deserialize<MessageParsedEvent>(ref reader);
+
+            if (parsedEvent != null) 
+                return parsedEvent;
+
+            throw new JsonException("Unknown event type");
         }
 
         public override void Write(Utf8JsonWriter writer, WebhookEventBase value, JsonSerializerOptions options)

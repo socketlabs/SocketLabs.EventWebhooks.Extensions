@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SocketLabs.EventWebhooks.Extensions.Models
+namespace SocketLabs.EventWebhooks.Extensions.Models.Events
 {
     public class FailedEvent : WebhookEventBase
     {

@@ -1,4 +1,4 @@
-﻿using SocketLabs.EventWebhooks.Extensions.Models;
+﻿using SocketLabs.EventWebhooks.Extensions.Models.Events;
 
 namespace SocketLabs.EventWebhooks.Extensions
 {

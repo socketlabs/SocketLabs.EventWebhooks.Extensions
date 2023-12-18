@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SocketLabs.EventWebhooks.Extensions.Configuration;
-using SocketLabs.EventWebhooks.Extensions.Models;
+using SocketLabs.EventWebhooks.Extensions.Models.Events;
 
 namespace SocketLabs.EventWebhooks.Extensions.Controllers
 {

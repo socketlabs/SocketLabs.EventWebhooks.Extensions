@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace SocketLabs.EventWebhooks.Extensions.Models
+namespace SocketLabs.EventWebhooks.Extensions.Models.Events
 {
-    public class QueuedEvent : WebhookEventBase
+    public class DeferredEvent : WebhookEventBase
     {
         public string? FromAddress { get; set; }
-        public string? SubjectLine { get; set; }
-        public int MessageSize { get; set; }
+        public int DeferralCode { get; set; }
+        public string? Reason { get; set; }
         public string? ClientIp { get; set; }
         public string? Url { get; set; }
         public string? UserAgent { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SocketLabs.EventWebhooks.Extensions.Models
+namespace SocketLabs.EventWebhooks.Extensions.Models.Events
 {
     //[JsonPolymorphic(TypeDiscriminatorPropertyName = nameof(Type))]
     //[JsonDerivedType(typeof(EngagementEvent), typeDiscriminator: "Tracking")]

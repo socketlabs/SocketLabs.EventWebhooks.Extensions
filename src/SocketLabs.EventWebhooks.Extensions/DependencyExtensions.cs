@@ -14,23 +14,35 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddWebhookEndpoints(this IServiceCollection services, IConfiguration configuration)
             => AddWebhookEndpoints(services, configuration, options => { });
 
+        public static IServiceCollection AddInboundParseEndpoints(this IServiceCollection services, IConfiguration configuration)
+            => AddInboundParseEndpoints(services, configuration, options => { });
+
         public static IServiceCollection AddWebhookEndpoints(this IServiceCollection services, IConfiguration configuration, Action<WebhookOptions> options)
         {
             var section = configuration.GetSection(nameof(WebhookOptions));
-            //var instance = section.Get<WebhookOptions>();
-
-            //if (instance is not null)
-            //    options.Invoke(instance);
                         
             services.Configure<WebhookOptions>(options);
             services.Configure<WebhookOptions>(section);
 
-            //services.PostConfigure(options);
+            return services;
+        }
+        
+        public static IServiceCollection AddInboundParseEndpoints(this IServiceCollection services, IConfiguration configuration, Action<InboundOptions> options)
+        {
+            var section = configuration.GetSection(nameof(InboundOptions));
+            
+            services.Configure<InboundOptions>(options);
+            services.Configure<InboundOptions>(section);
 
             return services;
         }
 
         public static IApplicationBuilder UseWebhookEndpoints(this IApplicationBuilder applicationBuilder)
+        {
+            return applicationBuilder;
+        }        
+        
+        public static IApplicationBuilder UseInboundEndpoints(this IApplicationBuilder applicationBuilder)
         {
             return applicationBuilder;
         }
