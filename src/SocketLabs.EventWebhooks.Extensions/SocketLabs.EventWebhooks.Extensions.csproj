@@ -4,6 +4,17 @@
 		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+        
+        <Company>SocketLabs</Company>
+		<Description>Library to make consuming SocketLabs webhooks easier.</Description>
+		<Copyright>© 2023 SocketLabs Acquisition, LLC. All rights reserved.</Copyright>
+		<Authors>Matt Soler</Authors>
+		<PackageTags>socketlabs,webhooks,aspnetcore,events</PackageTags>	<PackageProjectUrl>https://github.com/socketlabs/SocketLabs.EventWebhooks.Extensions</PackageProjectUrl>	<RepositoryUrl>https://github.com/socketlabs/SocketLabs.EventWebhooks.Extensions</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        
 	</PropertyGroup>
 
 	<ItemGroup>
