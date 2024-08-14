@@ -75,14 +75,16 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
                 webhookEvent.DateTime = date;
             }
 
-            _logger.LogTrace("Begin processing parsed message for {ServerId}", webhookEvent.ServerId);
+            _logger.LogTrace("Begin processing parsed message for ServerId: {ServerId} SubaccountId: {SubaccountId} IpPoolId: {IpPoolId}", 
+                webhookEvent.ServerId, webhookEvent.SubaccountId, webhookEvent.IpPoolId);
             await _parsedMessagesEventHandler.ProcessAsync(webhookEvent);
         }
 
         private async Task ProcessEvent(ValidationEvent webhookEvent)
         {
             webhookEvent.Type = "Validation";
-            _logger.LogTrace("Begin processing validation message for {ServerId}", webhookEvent.ServerId);
+            _logger.LogTrace("Begin processing validation message for ServerId: {ServerId} SubaccountId: {SubaccountId} IpPoolId: {IpPoolId}",
+                webhookEvent.ServerId, webhookEvent.SubaccountId, webhookEvent.IpPoolId);
             await _parsedMessagesEventHandler.ProcessAsync(webhookEvent);
         }
     }
