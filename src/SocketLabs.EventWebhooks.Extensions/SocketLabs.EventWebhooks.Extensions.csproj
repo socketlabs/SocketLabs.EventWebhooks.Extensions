@@ -7,7 +7,7 @@
         
         <Company>SocketLabs</Company>
 		<Description>Library to make consuming SocketLabs webhooks easier.</Description>
-		<Copyright>© 2023 SocketLabs Acquisition, LLC. All rights reserved.</Copyright>
+		<Copyright>© 2024 SocketLabs Acquisition, LLC. All rights reserved.</Copyright>
 		<Authors>Matt Soler</Authors>
 		<PackageTags>socketlabs,webhooks,aspnetcore,events</PackageTags>	<PackageProjectUrl>https://github.com/socketlabs/SocketLabs.EventWebhooks.Extensions</PackageProjectUrl>	<RepositoryUrl>https://github.com/socketlabs/SocketLabs.EventWebhooks.Extensions</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
