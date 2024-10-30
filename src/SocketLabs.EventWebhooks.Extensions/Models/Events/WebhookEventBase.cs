@@ -20,8 +20,8 @@ namespace SocketLabs.EventWebhooks.Extensions.Models.Events
         public string? MessageId { get; set; }
         public string? Address { get; set; }
         public int ServerId { get; set; }
-        public int SubaccountId { get; set; }
-        public int IpPoolId { get; set; }
+        public int? SubaccountId { get; set; }
+        public int? IpPoolId { get; set; }
         public string? SecretKey { get; set; }
         public Data? Data { get; set; }
         public string? WebhookEndpointName { get; set; }
