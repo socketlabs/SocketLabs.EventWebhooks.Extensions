@@ -3,10 +3,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SocketLabs.EventWebhooks.Extensions.Configuration;
 using SocketLabs.EventWebhooks.Extensions.Models.Events;
+using SocketLabs.EventWebhooks.Extensions.Models.Inbound;
 
 namespace SocketLabs.EventWebhooks.Extensions.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/[controller]/{id}")]
     [ApiController]
     public class WebhookEventsController : ControllerBase
     {
@@ -26,7 +27,6 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
         }
 
         [HttpPost]
-        [Route("{id}")]
         public async Task<IActionResult> Post(WebhookEventBase webhookEvent, string id)
         {
             if (!_options.TryGetWebhook(id, out var endpoint) || endpoint?.SecretKey != webhookEvent.SecretKey)
@@ -57,6 +57,44 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
                 _logger.LogError(ex, "Unable to process webhook event.");
 
                 return BadRequest();
+            }
+
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Post(WebhookEventBase[] webhookEvents, string id)
+        {
+            foreach (var webhookEvent in webhookEvents)
+            {
+                if (!_options.TryGetWebhook(id, out var endpoint) || endpoint?.SecretKey != webhookEvent.SecretKey)
+                {
+                    return Unauthorized();
+                }
+
+                try
+                {
+                    webhookEvent.WebhookEndpointName = id;
+
+                    Task result = webhookEvent switch
+                    {
+                        ComplaintEvent eventItem => ProcessEvent(eventItem),
+                        DeferredEvent eventItem => ProcessEvent(eventItem),
+                        EngagementEvent eventItem => ProcessEvent(eventItem),
+                        FailedEvent eventItem => ProcessEvent(eventItem),
+                        QueuedEvent eventItem => ProcessEvent(eventItem),
+                        SentEvent eventItem => ProcessEvent(eventItem),
+                        ValidationEvent eventItem => ProcessEvent(eventItem),
+                        _ => throw new InvalidOperationException("Unable to convert event type.")
+                    };
+
+                    await result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Unable to process webhook event.");
+                    return BadRequest();
+                }
+
             }
 
             return Ok();
