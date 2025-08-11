@@ -27,6 +27,12 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Post([FromBody] WebhookEventBase webhookEvents, string id)
+        {
+            return await Post([webhookEvents], id);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody] WebhookEventBase[] webhookEvents, string id)
         {
             foreach (var webhookEvent in webhookEvents)
