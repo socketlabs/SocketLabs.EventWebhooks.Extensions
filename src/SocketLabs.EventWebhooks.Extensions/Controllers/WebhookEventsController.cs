@@ -30,13 +30,14 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
         public async Task<IActionResult> Post(WebhookEventBatch? webhookEvents, string id)
         {
             if (webhookEvents == null) return BadRequest();
-
+            
+            if(!_options.TryGetWebhook(id, out var endpoint))
+                return Unauthorized();
+            
             foreach (var webhookEvent in webhookEvents)
             {
-                if (!_options.TryGetWebhook(id, out var endpoint) || endpoint?.SecretKey != webhookEvent.SecretKey)
-                {
+                if (endpoint?.SecretKey != webhookEvent.SecretKey)
                     return Unauthorized();
-                }
 
                 try
                 {
