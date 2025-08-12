@@ -31,14 +31,27 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
         {
             if (webhookEvents == null) return BadRequest();
             
-            if(!_options.TryGetWebhook(id, out var endpoint))
+            if(!_options.TryGetWebhook(id, out var endpoint) || endpoint==null)
                 return Unauthorized();
-            
+
+            // Collect all events with mismatched secret keys
+            var mismatchedEvents = webhookEvents
+                .Where(e => e.SecretKey != endpoint.SecretKey)
+                .Select(e => e.MessageId ?? "(no MessageId)")
+                .ToList();
+
+            if (mismatchedEvents.Any())
+            {
+                _logger.LogWarning("SecretKey mismatch for events: {EventIds} on endpoint {Endpoint}", string.Join(", ", mismatchedEvents), id);
+                return Unauthorized(new
+                {
+                    error = "One or more events have an invalid SecretKey.",
+                    eventIds = mismatchedEvents
+                });
+            }
+
             foreach (var webhookEvent in webhookEvents)
             {
-                if (endpoint?.SecretKey != webhookEvent.SecretKey)
-                    return Unauthorized();
-
                 try
                 {
                     webhookEvent.WebhookEndpointName = id;
