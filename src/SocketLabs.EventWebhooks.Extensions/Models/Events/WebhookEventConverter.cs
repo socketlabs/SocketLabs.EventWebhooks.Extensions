@@ -25,15 +25,9 @@ namespace SocketLabs.EventWebhooks.Extensions.Models.Events
                     }
                     return list;
                 default:
-                    return new WebhookEventBatch { JsonSerializer.Deserialize<WebhookEventBase>(ref reader, options) };
+                    return [JsonSerializer.Deserialize<WebhookEventBase>(ref reader, options)];
             }
         }
-
-        public override void Write(
-            Utf8JsonWriter writer,
-            WebhookEventBatch? objectToWrite,
-            JsonSerializerOptions options) =>
-            JsonSerializer.Serialize(writer, objectToWrite, objectToWrite.GetType(), options);
     }
     
     internal class WebhookEventConverter : JsonConverter<WebhookEventBase>
@@ -72,11 +66,6 @@ namespace SocketLabs.EventWebhooks.Extensions.Models.Events
                 return parsedEvent;
 
             throw new JsonException("Unknown event type");
-        }
-
-        public override void Write(Utf8JsonWriter writer, WebhookEventBase value, JsonSerializerOptions options)
-        {
-            JsonSerializer.Serialize(writer, value, options);
         }
     }
 }
