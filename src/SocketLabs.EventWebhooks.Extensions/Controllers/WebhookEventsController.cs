@@ -75,49 +75,49 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
         }
 
 
-        private async Task? ProcessEvent(ComplaintEvent webhookEvent)
+        private async Task ProcessEvent(ComplaintEvent webhookEvent)
         {
             webhookEvent.Type = "Complaint";
             _logger.LogTrace("Begin processing webhook event for {SystemMessageId}", webhookEvent.MessageId);
             await _webhookEventHandler.ProcessAsync(webhookEvent);
         }
 
-        private async Task? ProcessEvent(DeferredEvent webhookEvent)
+        private async Task ProcessEvent(DeferredEvent webhookEvent)
         {
             webhookEvent.Type = "Deferred";
             _logger.LogTrace("Begin processing webhook event for {SystemMessageId}", webhookEvent.MessageId);
             await _webhookEventHandler.ProcessAsync(webhookEvent);
         }
 
-        private async Task? ProcessEvent(EngagementEvent webhookEvent)
+        private async Task ProcessEvent(EngagementEvent webhookEvent)
         {
             webhookEvent.Type = "Tracking";
             _logger.LogTrace("Begin processing webhook event for {SystemMessageId}", webhookEvent.MessageId);
             await _webhookEventHandler.ProcessAsync(webhookEvent);
         }
 
-        private async Task? ProcessEvent(FailedEvent webhookEvent)
+        private async Task ProcessEvent(FailedEvent webhookEvent)
         {
             webhookEvent.Type = "Failed";
             _logger.LogTrace("Begin processing webhook event for {SystemMessageId}", webhookEvent.MessageId);
             await _webhookEventHandler.ProcessAsync(webhookEvent);
         }
 
-        private async Task? ProcessEvent(QueuedEvent webhookEvent)
+        private async Task ProcessEvent(QueuedEvent webhookEvent)
         {
             webhookEvent.Type = "Queued";
             _logger.LogTrace("Begin processing webhook event for {SystemMessageId}", webhookEvent.MessageId);
             await _webhookEventHandler.ProcessAsync(webhookEvent);
         }
 
-        private async Task? ProcessEvent(SentEvent webhookEvent)
+        private async Task ProcessEvent(SentEvent webhookEvent)
         {
             webhookEvent.Type = "Delivered";
             _logger.LogTrace("Begin processing webhook event for {SystemMessageId}", webhookEvent.MessageId);
             await _webhookEventHandler.ProcessAsync(webhookEvent);
         }
 
-        private async Task? ProcessEvent(ValidationEvent webhookEvent)
+        private async Task ProcessEvent(ValidationEvent webhookEvent)
         {
             webhookEvent.Type = "Validation";
             _logger.LogTrace("Begin processing webhook event for {SystemMessageId}", webhookEvent.MessageId);
