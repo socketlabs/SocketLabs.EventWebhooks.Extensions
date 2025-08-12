@@ -4,6 +4,38 @@ using SocketLabs.EventWebhooks.Extensions.Models.Inbound;
 
 namespace SocketLabs.EventWebhooks.Extensions.Models.Events
 {
+    internal class SingleOrArrayConverter : JsonConverter<WebhookEventBatch?>
+    {
+        public override WebhookEventBatch? Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options)
+        {
+            switch (reader.TokenType)
+            {
+                case JsonTokenType.Null:
+                    return null;
+                case JsonTokenType.StartArray:
+                    var list = new WebhookEventBatch();
+                    while (reader.Read())
+                    {
+                        if (reader.TokenType == JsonTokenType.EndArray)
+                            break;
+                        list.Add(JsonSerializer.Deserialize<WebhookEventBase>(ref reader, options));
+                    }
+                    return list;
+                default:
+                    return [JsonSerializer.Deserialize<WebhookEventBase>(ref reader, options)];
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            WebhookEventBatch? objectToWrite,
+            JsonSerializerOptions options) =>
+            JsonSerializer.Serialize(writer, objectToWrite, objectToWrite.GetType(), options);
+    }
+    
     internal class WebhookEventConverter : JsonConverter<WebhookEventBase>
     {
         public override WebhookEventBase? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

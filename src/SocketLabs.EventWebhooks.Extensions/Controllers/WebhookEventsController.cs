@@ -3,10 +3,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SocketLabs.EventWebhooks.Extensions.Configuration;
 using SocketLabs.EventWebhooks.Extensions.Models.Events;
+using SocketLabs.EventWebhooks.Extensions.Models.Inbound;
 
 namespace SocketLabs.EventWebhooks.Extensions.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/[controller]/{id}")]
     [ApiController]
     public class WebhookEventsController : ControllerBase
     {
@@ -24,43 +25,68 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
             _logger = logger;
             _options = options.CurrentValue;
         }
-
+        
         [HttpPost]
-        [Route("{id}")]
-        public async Task<IActionResult> Post(WebhookEventBase webhookEvent, string id)
+        public async Task<IActionResult> Post(WebhookEventBatch? webhookEvents, string id)
         {
-            if (!_options.TryGetWebhook(id, out var endpoint) || endpoint?.SecretKey != webhookEvent.SecretKey)
-            {
+            if (webhookEvents == null) return BadRequest();
+            
+            if(!_options.TryGetWebhook(id, out var endpoint) || endpoint==null)
                 return Unauthorized();
-            }
 
-            try
+            // Collect all events with mismatched secret keys
+            var mismatchedEvents = webhookEvents
+                .Where(e => e.SecretKey != endpoint.SecretKey)
+                .Select(e => e.MessageId ?? "(no MessageId)")
+                .ToList();
+
+            if (mismatchedEvents.Any())
             {
-                webhookEvent.WebhookEndpointName = id;
-
-                Task result = webhookEvent switch
+                _logger.LogWarning("SecretKey mismatch for events: {EventIds} on endpoint {Endpoint}", string.Join(", ", mismatchedEvents), id);
+                return Unauthorized(new
                 {
-                    ComplaintEvent eventItem => ProcessEvent(eventItem),
-                    DeferredEvent eventItem => ProcessEvent(eventItem),
-                    EngagementEvent eventItem => ProcessEvent(eventItem),
-                    FailedEvent eventItem => ProcessEvent(eventItem),
-                    QueuedEvent eventItem => ProcessEvent(eventItem),
-                    SentEvent eventItem => ProcessEvent(eventItem),
-                    ValidationEvent eventItem => ProcessEvent(eventItem),
-                    _ => throw new InvalidOperationException("Unable to convert event type.")
-                };
-
-                await result;
+                    error = "One or more events have an invalid SecretKey.",
+                    eventIds = mismatchedEvents
+                });
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unable to process webhook event.");
 
-                return BadRequest();
+            foreach (var webhookEvent in webhookEvents)
+            {
+                try
+                {
+                    webhookEvent.WebhookEndpointName = id;
+
+                    Task? result = webhookEvent switch
+                    {
+                        ComplaintEvent eventItem => ProcessEvent(eventItem),
+                        DeferredEvent eventItem => ProcessEvent(eventItem),
+                        EngagementEvent eventItem => ProcessEvent(eventItem),
+                        FailedEvent eventItem => ProcessEvent(eventItem),
+                        QueuedEvent eventItem => ProcessEvent(eventItem),
+                        SentEvent eventItem => ProcessEvent(eventItem),
+                        ValidationEvent eventItem => ProcessEvent(eventItem),
+                        _ => null
+                    };
+
+                    if (result == null)
+                    {
+                        _logger.LogError("Unable to convert event type: {EventType} for MessageId: {MessageId}",
+                            webhookEvent.GetType().Name, webhookEvent.MessageId);
+                        return BadRequest($"Unknown event type: {webhookEvent.GetType().Name}");
+                    }
+
+                    await result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Unable to process webhook event.");
+                    return BadRequest();
+                }
             }
 
             return Ok();
         }
+
 
         private async Task ProcessEvent(ComplaintEvent webhookEvent)
         {

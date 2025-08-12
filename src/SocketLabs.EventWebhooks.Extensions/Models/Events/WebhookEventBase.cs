@@ -11,6 +11,10 @@ namespace SocketLabs.EventWebhooks.Extensions.Models.Events
     //[JsonDerivedType(typeof(QueuedEvent), typeDiscriminator: "Queued")]
     //[JsonDerivedType(typeof(DeferredEvent), typeDiscriminator: "Deferred")]
 
+    [JsonConverter(typeof(SingleOrArrayConverter))]
+    public class WebhookEventBatch : List<WebhookEventBase>
+    {}
+    
     [JsonConverter(typeof(WebhookEventConverter))]
     public abstract class WebhookEventBase
     {

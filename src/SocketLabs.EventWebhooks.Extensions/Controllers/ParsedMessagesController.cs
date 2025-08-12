@@ -41,12 +41,18 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
             {
                 webhookEvent.WebhookEndpointName = id;
 
-                Task result = webhookEvent switch
+                Task? result = webhookEvent switch
                 {
                     MessageParsedEvent eventItem => ProcessEvent(eventItem),
                     ValidationEvent eventItem => ProcessEvent(eventItem),
-                    _ => throw new InvalidOperationException("Unable to convert event type.")
+                    _ => null
                 };
+
+                if (result == null)
+                {
+                    _logger.LogError("Unable to convert event type: {EventType} for MessageId: {MessageId}", webhookEvent.GetType().Name, webhookEvent.MessageId);
+                    return BadRequest($"Unknown event type: {webhookEvent.GetType().Name}");
+                }
 
                 await result;
             }
