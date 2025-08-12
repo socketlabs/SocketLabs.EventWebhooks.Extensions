@@ -25,16 +25,12 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
             _logger = logger;
             _options = options.CurrentValue;
         }
-
+        
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] WebhookEventBase webhookEvents, string id)
+        public async Task<IActionResult> Post(WebhookEventBatch? webhookEvents, string id)
         {
-            return await Post([webhookEvents], id);
-        }
+            if (webhookEvents == null) return BadRequest();
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] WebhookEventBase[] webhookEvents, string id)
-        {
             foreach (var webhookEvent in webhookEvents)
             {
                 if (!_options.TryGetWebhook(id, out var endpoint) || endpoint?.SecretKey != webhookEvent.SecretKey)
@@ -60,9 +56,11 @@ namespace SocketLabs.EventWebhooks.Extensions.Controllers
 
                     if (result == null)
                     {
-                        _logger.LogError("Unable to convert event type: {EventType} for MessageId: {MessageId}", webhookEvent.GetType().Name, webhookEvent.MessageId);
+                        _logger.LogError("Unable to convert event type: {EventType} for MessageId: {MessageId}",
+                            webhookEvent.GetType().Name, webhookEvent.MessageId);
                         return BadRequest($"Unknown event type: {webhookEvent.GetType().Name}");
                     }
+
                     await result;
                 }
                 catch (Exception ex)
