@@ -1,6 +1,11 @@
-﻿<img src="https://static.socketlabs.com/logos/logo-dark-sans-tag-507x64.png" alt="SocketLabs Logo" width="253" height="32" />  
+[![SocketLabs](https://static.socketlabs.com/logos/v3/logo-dark.svg)](https://www.socketlabs.com/developers)  
 
-[![Build status][build-status]][build]
+[![Twitter Follow](https://img.shields.io/twitter/follow/socketlabs.svg?style=social&label=Follow)](https://x.com/socketlabs) 
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![GitHub contributors](https://img.shields.io/github/contributors/socketlabs/SocketLabs.EventWebhooks.Extensions.svg)](https://github.com/socketlabs/SocketLabs.EventWebhooks.Extensions/graphs/contributors)
+[![Build status][build-status]][build]  
+
 # SocketLabs.EventWebhooks.Extensions
 > Library to make consuming SocketLabs webhooks easier.
 
